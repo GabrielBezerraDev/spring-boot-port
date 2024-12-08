@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+
+  db:
+    image: mysql
+    container_name: mysql
+    ports:
+    - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: spring
+    command: ['mysqld', '--character-set-server=utf8', '--collation-server=utf8_unicode_ci']
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  phpadmin:
+    container_name: phpadmin
+    image: phpmyadmin
+    restart: always
+    ports:
+    - 8081:80
+    environment:
+      PMA_PORT: 3306
+      PMA_PASSWORD: root
+      PMA_USER: root
